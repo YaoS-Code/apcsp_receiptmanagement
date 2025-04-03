@@ -1,11 +1,43 @@
+import java.util.Scanner;
+
+
 public class Management {
     public static void main(String[] args) {
+        menu();
+    }
+
+    public static void menu() {
+        Scanner input = new Scanner(System.in);
         System.out.println("Welcome to Management System");
-        Receipt demoReceipt = new Receipt("2025-04-02", "Haidilao", "Food & Drink", 100, "With friends.", 0.13, 20);
-        Receipt demoReceipt1 = new Receipt("2024-04-02", "Bestbuy", "Office", 2000, "Aliens Laptop", 0.13, 0);
-        new Receipt("2024-01-02", "Bestbuy", "Office", 2000, "Aliens Laptop", 0.13, 0);
-        new Receipt("2024-02-02", "Staples", "Office", 2000, "Aliens Laptop", 0.13, 0);
-        new Receipt("2024-03-02", "COmputer Store", "Office", 2000, "Aliens Laptop", 0.13, 0);
-        System.out.println(Receipt.getReceiptList());
+        System.out.println("----------------------------");
+        System.out.println("1. Record a Receipt");
+        System.out.println("2. Search a Receipt");
+        System.out.println("3. List Receipts");
+        System.out.println("4. Other");
+        System.out.println("5. Exit");
+        System.out.println("----------------------------");
+        System.out.print("Enter your choice: ");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.print("Receipt Recorded!");
+                break;
+            case 2:
+                System.out.print("Receipt Searched!");
+                break;
+                case 3:
+                    System.out.print("Receipt Listed!");
+                    break;
+                case 4:
+                    System.out.print("Receipt Other!");
+                    break;
+                case 5:
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+                    menu();
+        }
+
     }
 }
