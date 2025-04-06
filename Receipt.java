@@ -15,15 +15,14 @@ public class Receipt {
     private static ArrayList<Receipt> receiptList = new ArrayList<>();
 
     public Receipt(String receiptDate, String receiptName, String receiptType,
-                   double receiptAmount, String receiptDescription,
-                   double receiptTaxRate, double receiptTip) {
+                   String receiptDescription,double receiptAmount, double receiptTip) {
 
         this.receiptDate = receiptDate;
         this.receiptName = receiptName;
         this.receiptType = receiptType;
         this.receiptAmount = receiptAmount;
         this.receiptDescription = receiptDescription;
-        this.receiptTaxRate = receiptTaxRate;
+        this.receiptTaxRate = 0.13;
         this.receiptTip = receiptTip;
         this.receiptStatus = "completed";
         generateTax();
@@ -54,5 +53,9 @@ public class Receipt {
                 "\nreceiptTotalAmount=" + (receiptAmount+receiptTaxAmount+receiptTip) +
                 "\nreceiptStatus='" + receiptStatus + '\'' +
                 "\n-------------------------\n";
+    }
+
+    public String getReceiptName() {
+        return receiptName;
     }
 }
