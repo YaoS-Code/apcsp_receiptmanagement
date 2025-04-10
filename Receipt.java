@@ -55,6 +55,20 @@ public class Receipt {
                 "\n-------------------------\n";
     }
 
+    public String saveToDatabase() {
+        return "\n---------Receipt---------" +
+                "\nreceiptNumber:" + receiptNumber +
+                "\nreceiptDate:" + receiptDate +
+                "\nreceiptName:" + receiptName +
+                "\nreceiptType:" + receiptType +
+                "\nreceiptDescription:" + receiptDescription +
+                "\nreceiptAmount:" + receiptAmount +
+                "\nreceiptTaxAmount:" + receiptTaxAmount +
+                "\nreceiptTip:" + receiptTip +
+                "\nreceiptTotalAmount:" + (receiptAmount+receiptTaxAmount+receiptTip) +
+                "\nreceiptStatu:" + receiptStatus +
+                "\n-------------------------\n";
+    }
     public String getReceiptName() {
         return receiptName;
     }

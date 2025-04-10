@@ -43,7 +43,8 @@ public class Management {
                     System.out.println("Goodbye!");
                     return; // Exit the program
                 default:
-                    System.out.println("Invalid choice!");
+                    System.out.println("Invalid choice!\n");
+                    continue;
             }
             System.out.println("Do you want to continue? (y/n)");
             String continueChoice = input.next();
@@ -90,7 +91,7 @@ public class Management {
         Receipt receipt = new Receipt(date, name, type, description, amount, tip);
         System.out.println("Receipt Created!");
 
-        writeToFile(receipt);
+        writeToFile(receipt.saveToDatabase());
         System.out.println("Receipt saved to file.");
 
         System.out.println(receipt);
@@ -100,9 +101,10 @@ public class Management {
             createReceipt();
         } else {
             System.out.println("Returning to menu...");
+            menu();
         }
         input.close();
-        menu();
+    
     }
 
     public static void readFile() {
@@ -119,9 +121,9 @@ public class Management {
         }
     }
 
-    public static void writeToFile(Receipt receipt) {
+    public static void writeToFile(String receipt) {
         try {
-            FileWriter myWriter = new FileWriter("database.txt", true);
+            FileWriter myWriter = new FileWriter("./assets/database.txt", true);
             myWriter.write(receipt.toString());
             myWriter.close();
         } catch (IOException e) {

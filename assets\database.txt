@@ -1,0 +1,13 @@
+
+---------Receipt---------
+receiptNumber=1
+receiptDate='321'
+receiptName='321'
+receiptType='312'
+receiptDescription='123'
+receiptAmount=30.03
+receiptTaxAmount=0.0
+receiptTip=23.0
+receiptTotalAmount=53.03
+receiptStatus='completed'
+-------------------------
