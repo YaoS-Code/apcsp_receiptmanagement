@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Management {
     public static void main(String[] args) {
 
-        // readFile();
+        readFile();
         menu();
     }
 
@@ -34,7 +34,7 @@ public class Management {
                     searchReceipt();
                     break;
                 case 3:
-                    System.out.print("Receipt Listed!");
+                    printAllReceipts();
                     break;
                 case 4:
                     System.out.print("Receipt Other!");
@@ -50,11 +50,16 @@ public class Management {
             String continueChoice = input.next();
             if (continueChoice.toLowerCase().equals("n")) {
                 System.out.println("Goodbye!");
-                break; // Exit the loop
+                return; // Exit the loop
             }
         }
     }
     
+    private static void printAllReceipts() {
+        System.out.println(Receipt.getReceiptList());
+        menu();
+    }
+
     private static void searchReceipt() {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter Receipt Name to search: ");
@@ -91,7 +96,7 @@ public class Management {
         Receipt receipt = new Receipt(date, name, type, description, amount, tip);
         System.out.println("Receipt Created!");
 
-        writeToFile(receipt.saveToDatabase());
+        writeToFile(receipt);
         System.out.println("Receipt saved to file.");
 
         System.out.println(receipt);
@@ -109,11 +114,52 @@ public class Management {
 
     public static void readFile() {
         try {
-            File myObj = new File("database.txt");
+            File myObj = new File("./assets/database.txt");
             Scanner myReader = new Scanner(myObj);
+            int receiptNumber=0;
+            String receiptDate="";
+            String receiptName="";
+            String receiptType="";
+            String receiptDescription="";
+            double receiptAmount=0;
+            double receiptTip=0;
+            String receiptStatus="";
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                System.out.println(data);
+                
+                switch(data.split(":")[0]) {
+                    case "receiptNumber":
+                        receiptNumber = Integer.parseInt(data.split(":")[1]);
+                        break;
+                    case "receiptDate":
+                        receiptDate = data.split(":")[1];
+                        break;
+                    case "receiptName":
+                        receiptName = data.split(":")[1];
+                        break;
+                    case "receiptType":
+                        receiptType = data.split(":")[1];
+                        break;
+                    case "receiptDescription":
+                        receiptDescription = data.split(":")[1];
+                        break;
+                    case "receiptAmount":
+                        receiptAmount = Double.parseDouble(data.split(":")[1]);
+                        break;
+                    case "receiptTip":
+                        receiptTip = Double.parseDouble(data.split(":")[1]);
+                        break;
+                    case "receiptStatus":
+                        receiptStatus = data.split(":")[1];
+                        break;
+                    default:
+                        break;
+                }
+                if (data.equals("-------------------------")) {
+                    Receipt receipt = new Receipt(receiptDate, receiptName, receiptType, receiptDescription, receiptAmount, receiptTip);
+                    receipt.setReceiptNumber(receiptNumber);
+                    receipt.setReceiptStatus(receiptStatus);
+                }
         }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -121,7 +167,7 @@ public class Management {
         }
     }
 
-    public static void writeToFile(String receipt) {
+    public static void writeToFile(Receipt receipt) {
         try {
             FileWriter myWriter = new FileWriter("./assets/database.txt", true);
             myWriter.write(receipt.toString());

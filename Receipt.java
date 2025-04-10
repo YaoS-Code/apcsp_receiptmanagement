@@ -42,21 +42,6 @@ public class Receipt {
     @Override
     public String toString() {
         return "\n---------Receipt---------" +
-                "\nreceiptNumber=" + receiptNumber +
-                "\nreceiptDate='" + receiptDate + '\'' +
-                "\nreceiptName='" + receiptName + '\'' +
-                "\nreceiptType='" + receiptType + '\'' +
-                "\nreceiptDescription='" + receiptDescription + '\'' +
-                "\nreceiptAmount=" + receiptAmount +
-                "\nreceiptTaxAmount=" + receiptTaxAmount +
-                "\nreceiptTip=" + receiptTip +
-                "\nreceiptTotalAmount=" + (receiptAmount+receiptTaxAmount+receiptTip) +
-                "\nreceiptStatus='" + receiptStatus + '\'' +
-                "\n-------------------------\n";
-    }
-
-    public String saveToDatabase() {
-        return "\n---------Receipt---------" +
                 "\nreceiptNumber:" + receiptNumber +
                 "\nreceiptDate:" + receiptDate +
                 "\nreceiptName:" + receiptName +
@@ -69,7 +54,17 @@ public class Receipt {
                 "\nreceiptStatu:" + receiptStatus +
                 "\n-------------------------\n";
     }
+
     public String getReceiptName() {
         return receiptName;
+    }
+
+    public void setReceiptNumber(int receiptNumber) {
+        this.receiptNumber = receiptNumber;
+    }
+
+
+    public void setReceiptStatus(String receiptStatus) {
+        this.receiptStatus = receiptStatus;
     }
 }
