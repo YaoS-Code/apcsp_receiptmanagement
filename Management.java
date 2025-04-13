@@ -7,57 +7,132 @@ import java.io.IOException;
 
 public class Management {
     public static void main(String[] args) {
-
-        readFile();
-        menu();
+        readFile(); // read the file from the text file, create receipt objects 
+        app(); // start the app.
     }
 
-    public static void menu() {
+    public static void app() {
+        boolean isRunning = true; // main loop
+        while (isRunning) {
+            printMenu();
+            isRunning = userOpitons();
+        }
+    }
 
-        while (true) {
-            System.out.println("Welcome to Management System");
-            System.out.println("----------------------------");
-            System.out.println("1. Record a Receipt");
-            System.out.println("2. Search a Receipt");
-            System.out.println("3. List Receipts");
-            System.out.println("4. Other");
-            System.out.println("5. Exit");
-            System.out.println("----------------------------");
-            System.out.print("Enter your choice: ");
+    public static void printMenu() {
+        System.out.println("1. Create Receipt");
+        System.out.println("2. Search Receipt");
+        System.out.println("3. List Receipts by Date Range");
+        System.out.println("4. List Receipts by Type");
+        System.out.println("5. Print All Receipts");
+        System.out.println("6. Receipt Other");
+        System.out.println("7. Exit");
+    }
+
+    public static boolean userOpitons(){
+        System.out.print("Enter your choice: ");
             Scanner input = new Scanner(System.in);
             int choice = input.nextInt();
+            input.nextLine(); // Consume newline left-over
+            boolean isRunning = true;
             switch (choice) {
                 case 1:
                     createReceipt();
+                    System.out.println("Receipt Created!");
                     break;
                 case 2:
                     searchReceipt();
                     break;
                 case 3:
-                    printAllReceipts();
+                    listReceiptsByDateRange();
                     break;
                 case 4:
-                    System.out.print("Receipt Other!");
+                    listReceiptByType();
                     break;
                 case 5:
+                    printAllReceipts();
+                    break;
+                case 6:
+                    System.out.print("Receipt Other!");
+                    break;
+                case 7:
                     System.out.println("Goodbye!");
-                    return; // Exit the program
+                    isRunning = false; // Exit the loop
+                    break;
                 default:
                     System.out.println("Invalid choice!\n");
-                    continue;
-            }
-            System.out.println("Do you want to continue? (y/n)");
-            String continueChoice = input.next();
-            if (continueChoice.toLowerCase().equals("n")) {
-                System.out.println("Goodbye!");
-                return; // Exit the loop
-            }
+                    break;
+                }
+            isRunning = isRunning();
+                return isRunning;
+    }
+
+    public static boolean isRunning(){
+        Scanner input = new Scanner(System.in);
+        boolean isRunning = true;
+        System.out.println("Do you want to continue? (y/n)");
+        String continueChoice = input.nextLine();
+        if (continueChoice.toLowerCase().equals("n")) {
+            System.out.println("Goodbye!");
+            isRunning = false; // Exit the loop
         }
+    
+        return isRunning;
     }
     
+    // List receipts by type
+    // This method lists all receipts of a specific type
+    public static void listReceiptByType(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Receipt Type to search: ");
+        String receiptType = input.nextLine();
+        boolean found = false;
+        for (Receipt receipt : Receipt.getReceiptList()) {
+            if (receipt.getReceiptType().equals(receiptType) ) {
+                System.out.println(receipt);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Receipt not found.");
+        }
+    }
+
+
+    // List receipts by date range
+    // This method lists all receipts in a specific date range
+    private static void listReceiptsByDateRange() {
+        Scanner input = new Scanner(System.in);
+        double total = 0;
+        System.out.println("Enter start date (YYYY-MM-DD): ");
+        String startDate = input.nextLine();
+        System.out.println("Enter end date (YYYY-MM-DD): ");
+        String endDate = input.nextLine();
+        boolean found = false; 
+        for (Receipt receipt : Receipt.getReceiptList()) {
+            if (receipt.getReceiptDate().compareTo(startDate) >= 0 && receipt.getReceiptDate().compareTo(endDate) <= 0) {
+                System.out.println(receipt);
+                found = true;
+                total += receipt.getReceiptTotal();
+            }
+        }
+        if (!found) {
+            System.out.println("No receipts found in the given date range.");
+        } else System.out.println("Total amount of receipts in the date range: " + total);
+        
+        System.out.println("Do you want to continue? (y/n)");
+        String continueChoice = input.nextLine();
+        if (continueChoice.toLowerCase().equals("y")) {
+            listReceiptsByDateRange();
+        } else {
+            System.out.println("Returning to menu...");
+        }
+        app();
+    }
+
     private static void printAllReceipts() {
         System.out.println(Receipt.getReceiptList());
-        menu();
+        app();
     }
 
     private static void searchReceipt() {
@@ -75,7 +150,6 @@ public class Management {
         if (!found) {
             System.out.println("Receipt not found.");
         }
-        menu();
     }
 
     public static void createReceipt() {
@@ -106,9 +180,7 @@ public class Management {
             createReceipt();
         } else {
             System.out.println("Returning to menu...");
-            menu();
         }
-        input.close();
     
     }
 

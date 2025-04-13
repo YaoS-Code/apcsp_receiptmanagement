@@ -31,6 +31,16 @@ public class Receipt {
         this.receiptNumber = receiptList.size();
     }
 
+    public double getReceiptTotal() {
+        return receiptAmount+receiptTaxAmount+receiptTip;
+    }
+    public String getReceiptType() {
+        return receiptType;
+    }
+
+    public String getReceiptDate() {
+        return receiptDate;
+    }
     public void generateTax() {
         receiptAmount = receiptAmount * receiptTaxRate;
     }
