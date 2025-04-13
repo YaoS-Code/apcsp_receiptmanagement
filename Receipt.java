@@ -34,6 +34,7 @@ public class Receipt {
     public double getReceiptTotal() {
         return receiptAmount+receiptTaxAmount+receiptTip;
     }
+    
     public String getReceiptType() {
         return receiptType;
     }

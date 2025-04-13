@@ -21,7 +21,7 @@ public class Management {
 
     public static void printMenu() {
         System.out.println("1. Create Receipt");
-        System.out.println("2. Search Receipt");
+        System.out.println("2. Search Receipt by Name");
         System.out.println("3. List Receipts by Date Range");
         System.out.println("4. List Receipts by Type");
         System.out.println("5. Print All Receipts");
@@ -84,6 +84,10 @@ public class Management {
     // This method lists all receipts of a specific type
     public static void listReceiptByType(){
         Scanner input = new Scanner(System.in);
+        double total = 0;
+        int count = 0;
+        double max = 0;
+        double min = 99999;
         System.out.println("Enter Receipt Type to search: ");
         String receiptType = input.nextLine();
         boolean found = false;
@@ -91,10 +95,25 @@ public class Management {
             if (receipt.getReceiptType().equals(receiptType) ) {
                 System.out.println(receipt);
                 found = true;
+                total += receipt.getReceiptTotal();
+                count++;
+                if (receipt.getReceiptTotal() > max) {
+                    max = receipt.getReceiptTotal();
+                }
+                if (receipt.getReceiptTotal() < min) {
+                    min = receipt.getReceiptTotal();
+                }
             }
         }
         if (!found) {
             System.out.println("Receipt not found.");
+        } else {
+
+            System.out.println("Total number of receipts of type " + receiptType + ": " + count);
+            System.out.println("Total amount of receipts of type " + receiptType + ": " + total);
+            System.out.println("Maximum amount of receipts of type " + receiptType + ": " + max);
+            System.out.println("Minimum amount of receipts of type " + receiptType + ": " + min);
+            System.out.println("Average amount of receipts of type " + receiptType + ": " + (total/count));
         }
     }
 
@@ -104,6 +123,9 @@ public class Management {
     private static void listReceiptsByDateRange() {
         Scanner input = new Scanner(System.in);
         double total = 0;
+        int count = 0;
+        double max = 0;
+        double min = 99999;
         System.out.println("Enter start date (YYYY-MM-DD): ");
         String startDate = input.nextLine();
         System.out.println("Enter end date (YYYY-MM-DD): ");
@@ -114,25 +136,29 @@ public class Management {
                 System.out.println(receipt);
                 found = true;
                 total += receipt.getReceiptTotal();
+                count++;
+                if (receipt.getReceiptTotal() > max) {
+                    max = receipt.getReceiptTotal();
+                }
+                if (receipt.getReceiptTotal() < min) {
+                    min = receipt.getReceiptTotal();
+                }
             }
         }
         if (!found) {
             System.out.println("No receipts found in the given date range.");
-        } else System.out.println("Total amount of receipts in the date range: " + total);
-        
-        System.out.println("Do you want to continue? (y/n)");
-        String continueChoice = input.nextLine();
-        if (continueChoice.toLowerCase().equals("y")) {
-            listReceiptsByDateRange();
         } else {
-            System.out.println("Returning to menu...");
+            System.out.println("Total number of receipts in the date range: " + count);
+            System.out.println("Total amount of receipts in the date range: " + total);
+            System.out.println("Maximum amount of receipts in the date range: " + max);
+            System.out.println("Minimum amount of receipts in the date range: " + min);
+            System.out.println("Average amount of receipts in the date range: " + (total/count));
         }
-        app();
+    
     }
 
     private static void printAllReceipts() {
         System.out.println(Receipt.getReceiptList());
-        app();
     }
 
     private static void searchReceipt() {
