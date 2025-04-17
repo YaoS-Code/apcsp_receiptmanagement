@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.io.FileWriter;
@@ -21,12 +20,10 @@ public class Management {
 
     public static void printMenu() {
         System.out.println("1. Create Receipt");
-        System.out.println("2. Search Receipt by Name");
-        System.out.println("3. List Receipts by Date Range");
-        System.out.println("4. List Receipts by Type");
-        System.out.println("5. Print All Receipts");
-        System.out.println("6. Receipt Other");
-        System.out.println("7. Exit");
+        System.out.println("2. Return Receipt");
+        System.out.println("3. Display Receipts");
+        System.out.println("4. Sort Receipts");
+        System.out.println("5. Exit");
     }
 
     public static boolean userOpitons(){
@@ -44,18 +41,14 @@ public class Management {
                     searchReceipt();
                     break;
                 case 3:
-                    listReceiptsByDateRange();
+                    System.out.print("Display Receipts");
+                    displayReceipts();
                     break;
                 case 4:
-                    listReceiptByType();
+                    System.out.println("Sort Receipts");
+                    sortReceipts();
                     break;
                 case 5:
-                    printAllReceipts();
-                    break;
-                case 6:
-                    System.out.print("Receipt Other!");
-                    break;
-                case 7:
                     System.out.println("Goodbye!");
                     isRunning = false; // Exit the loop
                     break;
@@ -65,6 +58,81 @@ public class Management {
                 }
             isRunning = isRunning();
                 return isRunning;
+    }
+
+    private static void sortReceipts() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("1. Sort by Date");
+        System.out.println("2. Sort by Amount");
+        System.out.println("3. Sort by Receipt Number");
+        System.out.print("Enter your choice: ");
+        int choice = input.nextInt();
+        input.nextLine(); // Consume newline left-over
+        switch (choice) {
+            case 1:
+                sortByDate(); // sort by date using selection sort
+                break;
+            case 2:
+                sortByAmount(); // sort by amount using selection sort
+                break;
+            case 3:
+                readFile(); // instead of sorting, read the file again to get the oringinal order
+                System.out.println("Receipts sorted by receipt number. Done.");
+                break;
+            default:
+                System.out.println("Invalid choice!\n");
+                break;
+        }
+    }
+
+    private static void sortByAmount() {
+        for (int i = 0; i < Receipt.getReceiptList().size(); i++) {
+            for (int j = 0; j < Receipt.getReceiptList().size() - 1; j++) {
+                if (Receipt.getReceiptList().get(j).getReceiptTotal() > Receipt.getReceiptList().get(j + 1).getReceiptTotal()) {
+                    Receipt temp = Receipt.getReceiptList().get(j);
+                    Receipt.getReceiptList().set(j, Receipt.getReceiptList().get(j + 1));
+                    Receipt.getReceiptList().set(j + 1, temp);
+                }
+            }
+        }
+        System.out.println("Receipts sorted by amount. Done.");
+    }
+
+    private static void sortByDate() {
+        for (int i = 0; i < Receipt.getReceiptList().size(); i++) {
+            for (int j = 0; j < Receipt.getReceiptList().size() - 1; j++) {
+                if (Receipt.getReceiptList().get(j).getReceiptDate().compareTo(Receipt.getReceiptList().get(j + 1).getReceiptDate()) > 0) {
+                    Receipt temp = Receipt.getReceiptList().get(j);
+                    Receipt.getReceiptList().set(j, Receipt.getReceiptList().get(j + 1));
+                    Receipt.getReceiptList().set(j + 1, temp);
+                }
+            }
+        }
+        System.out.println("Receipts sorted by date. Done.");
+    }
+
+    private static void displayReceipts() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("\n1. List Receipts by Type");
+        System.out.println("2. List Receipts by Date Range");
+        System.out.println("3. List All Receipts");
+        System.out.print("Enter your choice: ");
+        int choice = input.nextInt();
+        input.nextLine(); // Consume newline left-over
+        switch (choice) {
+            case 1:
+                listReceiptByType();
+                break;
+            case 2:
+                listReceiptsByDateRange();
+                break;
+            case 3:
+                printAllReceipts();
+                break;
+            default:
+                System.out.println("Invalid choice!\n");
+                break;
+        }
     }
 
     public static boolean isRunning(){
@@ -170,12 +238,27 @@ public class Management {
             if (receipt.getReceiptName().equals(receiptName) ) {
                 System.out.println(receipt);
                 found = true;
+                System.out.println("Receipt found!");
+                returnReceipt(receipt);
                 break;
             }
         }
         if (!found) {
             System.out.println("Receipt not found.");
         }
+    }
+
+    private static void returnReceipt(Receipt receipt) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Are you sure you want to return this receipt? (y/n)");
+        String choice = input.nextLine();
+        if (choice.toLowerCase().equals("n")) {
+            System.out.println("Receipt not returned.");
+            return;
+        }
+        receipt.setReceiptStatus("returned");
+        System.out.println("Receipt returned!");
+        System.out.println(receipt);
     }
 
     public static void createReceipt() {
@@ -256,7 +339,6 @@ public class Management {
                 if (data.equals("-------------------------")) {
                     Receipt receipt = new Receipt(receiptDate, receiptName, receiptType, receiptDescription, receiptAmount, receiptTip);
                     receipt.setReceiptNumber(receiptNumber);
-                    receipt.setReceiptStatus(receiptStatus);
                 }
         }
             myReader.close();

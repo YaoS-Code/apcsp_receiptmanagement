@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 public class Receipt {
 
-    private int receiptNumber;
+    // instance variables
+    private int receiptNumber; 
     private String receiptDate;
     private String receiptName;
     private String receiptType;
     private double receiptAmount;
     private String receiptDescription;
-    private String receiptStatus; // 1. completed, 2. returned
+    private String receiptStatus;
     private double receiptTaxRate;
     private double receiptTaxAmount;
     private double receiptTip;
@@ -50,6 +51,19 @@ public class Receipt {
         return receiptList;
     }
 
+    public String getReceiptName() {
+        return receiptName;
+    }
+
+    public void setReceiptNumber(int receiptNumber) {
+        this.receiptNumber = receiptNumber;
+    }
+
+
+    public void setReceiptStatus(String receiptStatus) {
+        this.receiptStatus = receiptStatus;
+    }
+
     @Override
     public String toString() {
         return "\n---------Receipt---------" +
@@ -64,18 +78,5 @@ public class Receipt {
                 "\nreceiptTotalAmount:" + (receiptAmount+receiptTaxAmount+receiptTip) +
                 "\nreceiptStatu:" + receiptStatus +
                 "\n-------------------------\n";
-    }
-
-    public String getReceiptName() {
-        return receiptName;
-    }
-
-    public void setReceiptNumber(int receiptNumber) {
-        this.receiptNumber = receiptNumber;
-    }
-
-
-    public void setReceiptStatus(String receiptStatus) {
-        this.receiptStatus = receiptStatus;
     }
 }
