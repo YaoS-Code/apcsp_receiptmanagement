@@ -1,17 +1,17 @@
 import java.util.Scanner;
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Management {
     public static void main(String[] args) {
-        readFile(); // read the file from the text file, create receipt objects 
-        app(); // start the app.
+        readFile();
+        app();
     }
 
     public static void app() {
-        boolean isRunning = true; // main loop
+        boolean isRunning = true;
         while (isRunning) {
             printMenu();
             isRunning = userOpitons();
@@ -29,34 +29,43 @@ public class Management {
     public static boolean userOpitons(){
         System.out.print("Enter your choice: ");
             Scanner input = new Scanner(System.in);
-            int choice = input.nextInt();
-            input.nextLine(); // Consume newline left-over
+            int choice;
+            try {
+                choice = input.nextInt();
+            } catch (Exception e) {
+                choice = 6;
+            }
+            input.nextLine();
             boolean isRunning = true;
             switch (choice) {
                 case 1:
                     createReceipt();
                     System.out.println("Receipt Created!");
+                    isRunning = isRunning();
                     break;
                 case 2:
                     searchReceipt();
+                    isRunning = isRunning();
                     break;
                 case 3:
                     System.out.print("Display Receipts");
                     displayReceipts();
+                    isRunning = isRunning();
                     break;
                 case 4:
                     System.out.println("Sort Receipts");
                     sortReceipts();
+                    isRunning = isRunning();
                     break;
                 case 5:
                     System.out.println("Goodbye!");
-                    isRunning = false; // Exit the loop
+                    isRunning = false;
                     break;
                 default:
                     System.out.println("Invalid choice!\n");
                     break;
                 }
-            isRunning = isRunning();
+                
                 return isRunning;
     }
 
@@ -66,17 +75,22 @@ public class Management {
         System.out.println("2. Sort by Amount");
         System.out.println("3. Sort by Receipt Number");
         System.out.print("Enter your choice: ");
-        int choice = input.nextInt();
-        input.nextLine(); // Consume newline left-over
+        int choice;
+        try {
+            choice = input.nextInt();
+        } catch (Exception e) {
+            choice = 6; 
+        }
+        input.nextLine();
         switch (choice) {
             case 1:
-                sortByDate(); // sort by date using selection sort
+                sortByDate();
                 break;
             case 2:
-                sortByAmount(); // sort by amount using selection sort
+                sortByAmount();
                 break;
             case 3:
-                readFile(); // instead of sorting, read the file again to get the oringinal order
+                readFile();
                 System.out.println("Receipts sorted by receipt number. Done.");
                 break;
             default:
@@ -118,7 +132,7 @@ public class Management {
         System.out.println("3. List All Receipts");
         System.out.print("Enter your choice: ");
         int choice = input.nextInt();
-        input.nextLine(); // Consume newline left-over
+        input.nextLine();
         switch (choice) {
             case 1:
                 listReceiptByType();
@@ -142,14 +156,12 @@ public class Management {
         String continueChoice = input.nextLine();
         if (continueChoice.toLowerCase().equals("n")) {
             System.out.println("Goodbye!");
-            isRunning = false; // Exit the loop
+            isRunning = false;
         }
     
         return isRunning;
     }
     
-    // List receipts by type
-    // This method lists all receipts of a specific type
     public static void listReceiptByType(){
         Scanner input = new Scanner(System.in);
         double total = 0;
@@ -185,9 +197,6 @@ public class Management {
         }
     }
 
-
-    // List receipts by date range
-    // This method lists all receipts in a specific date range
     private static void listReceiptsByDateRange() {
         Scanner input = new Scanner(System.in);
         double total = 0;
@@ -222,7 +231,6 @@ public class Management {
             System.out.println("Minimum amount of receipts in the date range: " + min);
             System.out.println("Average amount of receipts in the date range: " + (total/count));
         }
-    
     }
 
     private static void printAllReceipts() {
@@ -275,7 +283,7 @@ public class Management {
         double amount = input.nextDouble();
         System.out.println("Enter Receipt Tip: ");
         double tip = input.nextDouble();
-        input.nextLine(); // Consume newline left-over
+        input.nextLine();
         Receipt receipt = new Receipt(date, name, type, description, amount, tip);
         System.out.println("Receipt Created!");
 
@@ -290,7 +298,6 @@ public class Management {
         } else {
             System.out.println("Returning to menu...");
         }
-    
     }
 
     public static void readFile() {
